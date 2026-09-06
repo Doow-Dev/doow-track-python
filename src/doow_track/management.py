@@ -67,7 +67,10 @@ class AppsResource(BaseResource):
         """List all apps."""
         params = params or PaginationParams()
         self._log("GET /sdk/apps")
-        data = self._client._get("/sdk/apps", {"limit": params.limit, "cursor": params.cursor})
+        query: dict[str, Any] = {"limit": params.limit}
+        if params.cursor:
+            query["cursor"] = params.cursor
+        data = self._client._get("/sdk/apps", query)
         apps = [App(**item) for item in data.get("data", [])]
         return PaginatedResult(apps, data.get("next_cursor"), data.get("has_more", False))
 
@@ -104,9 +107,10 @@ class ContractsResource(BaseResource):
         """List contracts for an app."""
         params = params or PaginationParams()
         self._log(f"GET /sdk/apps/{app_id}/contracts")
-        data = self._client._get(
-            f"/sdk/apps/{app_id}/contracts", {"limit": params.limit, "cursor": params.cursor}
-        )
+        query: dict[str, Any] = {"limit": params.limit}
+        if params.cursor:
+            query["cursor"] = params.cursor
+        data = self._client._get(f"/sdk/apps/{app_id}/contracts", query)
         contracts = [Contract(**item) for item in data.get("data", [])]
         return PaginatedResult(contracts, data.get("next_cursor"), data.get("has_more", False))
 
@@ -147,10 +151,10 @@ class LicensesResource(BaseResource):
         """List licenses for a contract."""
         params = params or PaginationParams()
         self._log(f"GET /sdk/contracts/{contract_id}/licenses")
-        data = self._client._get(
-            f"/sdk/contracts/{contract_id}/licenses",
-            {"limit": params.limit, "cursor": params.cursor},
-        )
+        query: dict[str, Any] = {"limit": params.limit}
+        if params.cursor:
+            query["cursor"] = params.cursor
+        data = self._client._get(f"/sdk/contracts/{contract_id}/licenses", query)
         licenses = [License(**item) for item in data.get("data", [])]
         return PaginatedResult(licenses, data.get("next_cursor"), data.get("has_more", False))
 
@@ -183,10 +187,10 @@ class MetricsResource(BaseResource):
         """List metrics for a license."""
         params = params or PaginationParams()
         self._log(f"GET /sdk/licenses/{license_id}/metrics")
-        data = self._client._get(
-            f"/sdk/licenses/{license_id}/metrics",
-            {"limit": params.limit, "cursor": params.cursor},
-        )
+        query: dict[str, Any] = {"limit": params.limit}
+        if params.cursor:
+            query["cursor"] = params.cursor
+        data = self._client._get(f"/sdk/licenses/{license_id}/metrics", query)
         metrics = [Metric(**item) for item in data.get("data", [])]
         return PaginatedResult(metrics, data.get("next_cursor"), data.get("has_more", False))
 
