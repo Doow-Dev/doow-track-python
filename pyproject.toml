@@ -38,6 +38,10 @@ dev = [
     "mypy>=1.0.0",
 ]
 
+[project.scripts]
+doow-track = "doow_track.cli.main:main"
+doow-sidecar = "doow_track.cli.sidecar:main"
+
 [project.urls]
 Homepage = "https://doow.co"
 Documentation = "https://docs.doow.co/sdks/python"
