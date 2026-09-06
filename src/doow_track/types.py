@@ -123,9 +123,9 @@ class License(BaseModel):
     id: str
     name: str
     license_type: LicenseType
-    contract_id: str
-    created_at: datetime
-    updated_at: datetime
+    contract_id: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class LicenseInput(BaseModel):
